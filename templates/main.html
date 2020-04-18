@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 부트스트랩 사용 -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      .write_button {
+        margin-left: 50px;
+        margin-top: 30px;
+      }
+
+      @media (min-width: 576px){
+        .card-columns {
+            -webkit-column-count: 4;
+            -moz-column-count: 4;
+            /* column-count: 3; */
+            /* -webkit-column-gap: 1.25rem; */
+            -moz-column-gap: 1.25rem;
+            /* column-gap: 1.25rem; */
+        }
+      }
+    </style>
+    <script>
+
+      $(document).ready(function(){
+        $('#collections-box').html(''); //중괄호안의 내용들을 새로고침될때마다 list라는 함수를 실행한다.
+        listing();
+      });
+
+      function listing() {
+        $.ajax({
+          type: "GET", //저장된 데이터를 요청할때 사용
+          url: "/collections",
+          data: {},
+          success: function(response){
+             if (response['result'] == 'success') {
+               let collections = response['collections'];
+               for (let i = 0; i < collections.length; i++) {
+                 make_card(collections[i]['category'],collections[i]['title'],collections[i]['code'],collections[i]['memo'])
+               }
+             } else {
+               alert('정보를 불러오지 못했습니다.');
+             }
+          }
+        })
+      }
+
+      function make_card(category,title,code,memo) { 
+        let temp_html = '<div class="card">\
+        <img src="static/img.jpg" alt="" class="card-img-top" />\
+        <div class="card-body">\
+          <p class="card-title">카테고리 :'+category+' </p>\
+          <p class="card-text">타이틀 :'+title+' </p>\
+          <p class="card-text">상품코드 : '+code+'</p>\
+          <p class="card-text">메모 :'+memo+' </p>\
+          <!-- <a href="#" class="btn btn-primary">More</a> -->\
+        </div>\
+      </div>';
+        $('#collections-box').append(temp_html);
+      }
+
+    </script>
+
+    <!-- 구글 폰트 -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Gaegu|Poor+Story|Sunflower:300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"
+        ><img src= "{{ url_for('static', filename='logo.png') }}" width="100" height="100" /><strong
+          >어른이의 취미생활</strong></a>
+
+         
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      ></button>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >소장품 <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >상품검색 <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >MYPAGE<span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >LOGIN<span class="sr-only">(current)</span></a
+            >
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
+    </nav>
+
+    <div class="write_button">
+  <a button type="button" class="btn btn-outline-dark" href="http://localhost:5000/write">글 쓰기</button></a>
+</div>
+
+<div class="container">
+  <div class="card-columns card-post" id="collections-box">
+    <!-- <div class="col-3">
+      <p> </p>
+      <div class="card">
+        <img src="img.jpg" alt="" class="card-img-top" />
+        <div class="card-body">
+          <h5 class="card-title">카테고리</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam egestas sed sem ut malesuada.</p>
+          <a href="#" class="btn btn-primary">More</a>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-3">
+      <p> </p>
+      <div class="card">
+        <img src="img.jpg" alt="" class="card-img-top" />
+        <div class="card-body">
+          <p class="card-text">카테고리 : </p>
+          <p class="card-text">타이틀 : </p>
+          <p class="card-text">상품코드 : </p>
+          <p class="card-text">메모 : </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <p> </p>
+      <div class="card">
+        <img src="img.jpg" alt="" class="card-img-top" />
+        <div class="card-body">
+          <p class="card-text">카테고리 : </p>
+          <p class="card-text">타이틀 : </p>
+          <p class="card-text">상품코드 : </p>
+          <p class="card-text">메모 : </p>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

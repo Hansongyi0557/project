@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 부트스트랩 사용 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+
+    <!-- 구글 폰트 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Gaegu|Poor+Story|Sunflower:300&display=swap" rel="stylesheet">
+
+    <!-- CSS 분리
+    <link rel="stylesheet" type="text/css" href="wirte.css"> -->
+
+    <style>
+        body {
+            padding-top: 70px;
+            padding-bottom: 30px;
+            padding-left: 300px;
+            padding-right: 300px;
+        }
+        
+        .imagePreview {
+            width: 100%;
+            height: 180px;
+            background-position: center center;
+            background: url(http://cliquecities.com/assets/no-image-e3699ae23f866f6cbdf8ba2443ee5c4e.jpg);
+            background-color: #fff;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
+            box-shadow: 0px -3px 6px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary {
+            display: block;
+            border-radius: 0px;
+            box-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.2);
+            margin-top: -5px;
+        }
+        .imgUp {
+            width: 165px;
+            margin-bottom: 15px;
+            margin-right: 16px;
+            position: relative;
+        }
+        
+        .del {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+        }
+        
+        .imgAdd {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #4bd7ef;
+            color: #fff;
+            box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            line-height: 30px;
+            margin-top: 0px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+    </style>
+
+    <script>
+        $(document).on("click", "i.del", function() {
+            $(this).parent().remove();
+        });
+        $(function() {
+            $(document).on("change", ".uploadFile", function() {
+                var uploadFile = $(this);
+                var files = !!this.files ? this.files : [];
+                if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+                if (/^image/.test(files[0].type)) { // only image file
+                    var reader = new FileReader(); // instance of the FileReader
+                    reader.readAsDataURL(files[0]); // read the local file
+
+                    reader.onloadend = function() { // set image data as background of div
+                        //alert(uploadFile.closest(".upimage").find('.imagePreview').length);
+                        uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
+                    }
+                }
+
+            });
+        });
+
+        function newImage() {
+            $('.imgAdd').closest(".row").find('.imgAdd').before('<div class="imgUp"><div class="imagePreview"></div><label class="btn btn-primary">Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width:0px;height:0px;overflow:hidden;"></label><i class="fa fa-times del"></i></div>');
+        }
+
+//저장하기 버튼 클릭
+        function save() {
+            let category =$('#select-category').val();
+            let title = $('#input-title').val();
+            let code = $('#input-code').val();
+            let memo = $('#input-memo').val();
+         
+
+        if ( category === '') {
+        alert('분류를 선택해주세요.')
+        $('#select-category').focus()
+        return
+    }
+else if ( title === '') {
+        alert('제목을 입력해주세요.')
+        $('#input-title').focus()
+        return
+    } else if (code == '') {
+        alert('상품코드를 입력해주세요')
+        $('#input-code').focus()
+        return
+} else if (memo == '') {
+        alert('메모를 입력해주세요')
+        $('#input-memo').focus()
+        return
+    }    
+    else {
+        $.ajax({
+            type: "POST", //post 생성, 수정, 삭제
+            url: "/save",
+            data: {category: category, title: title, code: code, memo: memo},
+            success: function(response) {
+                alert(response['msg']);
+                alert('저장완료!');
+                $('#input-category').val('');
+                $('#input-category').val('');
+                $('#input-title').val('');
+                $('#input-code').val('');
+                $('#input-memo').val('')
+                window.location.reload();
+              
+            }
+        });
+    }
+         }
+    </script>
+
+</head>
+
+<body>
+    <form>
+        <fieldset>
+            <div class="row">
+                <div class="imgUp">
+                    <div class="imagePreview"></div>
+                    <label class="btn btn-primary">
+                        Upload<input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                              </label>
+                </div>
+                <!-- col-2 -->
+                <i class="fa fa-plus imgAdd" id="imgAdd" onClick="newImage()"></i>
+            </div>
+            <!-- row -->
+            <div class="form-group">
+                <label for="category">카테고리</label>
+                <select class="form-control" id="select-category">
+                    <option>Boyds Bear1</option>
+                    <option>Boyds Bear2</option>
+                    <option>Boyds Bear3</option>
+                    <option>Boyds Bear4</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input id="input-title" type="text" class="form-control" id="titleInput" aria-describedby="titleHelp">
+            </div>
+            <div class="form-group">
+                <label for="code">상품 코드</label>
+                <input id="input-code" type="text" class="form-control" id="Inputcode">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleTextarea">설명</label>
+                <textarea id="input-memo" class="form-control" id="exampleTextarea" rows="3"></textarea>
+            </div>
+            <div align=right>
+                <fieldset class="form-group">
+                    <button onClick="save()" type="submit" class="btn btn-success">저장하기</button>
+                    <button type="submit" class="btn btn-secondary">취소</button>
+                </fieldset>
+            </div>
+    </form>
+
+
+</body>
+
+</html>
